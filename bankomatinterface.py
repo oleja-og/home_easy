@@ -1,6 +1,10 @@
 from tkinter import *
 import json
 
+import function
+from function import Bankomat, Person, test_sum, enter_sum, take_of_money_usd, take_of_money_rb, main
+
+
 class Login(Tk):
     def __init__(self, *arg, **kwarg):
         super().__init__(*arg, **kwarg)
@@ -17,28 +21,27 @@ class Login(Tk):
         password = self.entry2.get()
         with open("users.json", "r") as read_file:
             data = json.load(read_file)
-        if name in data and name != "admin":
-            if password == data[name]:
-                self.destroy()
-                Choice().mainloop()
-        if name == "admin":
-            if password == data[name]:
-                self.destroy()
-                Admin().mainloop()
+            if name in data and name != "admin":
+                if password == data[name]:
+                    p = Person("oleg", 1111, 2000)
+                    self.destroy()
+                    Choice().mainloop()
+            if name == "admin":
+                if password == data[name]:
+                    self.destroy()
+                    Admin().mainloop()
 
 
 class Admin(Tk):
     def __init__(self, *arg, **kwarg):
         super().__init__(*arg, **kwarg)
         self.attributes("-fullscreen", True)
-        self.entry1 = Entry(self, show=None, font=('Arial', 14))
-        self.entry2 = Entry(self, show='*', font=('Arial', 14))
         self.button = Button(self, text='enter pin', width=15, height=2, command=None)
-        self.label = Label(self, text='MAKE YOUR CHOICE', font=('Arial', 30))
-        self.label.place(x=900, y=500)
-        self.entry1.place(x=900, y=500)
-        self.entry2.place(x=900, y=550)
-        self.button.place(x=930, y=600)
+        self.label1 = Label(self, text= b.usd, font=('Arial', 30))
+        self.label2 = Label(self, text=b.byn, font=('Arial', 30))
+        self.label1.place(x=900, y=400)
+        self.label2.place(x=900, y=500)
+        self.button.place(x=1500, y=600)
 
 
 class Choice(Tk):
@@ -71,7 +74,7 @@ class Balance(Tk):
     def __init__(self, *arg, **kwarg):
         super().__init__(*arg, **kwarg)
         self.attributes("-fullscreen", True)
-        self.label = Label(self, text='would you like another operation', font=('Arial', 30))
+        self.label = Label(self, text = (p.byn,p.usd), font=('Arial', 30))
         self.button1 = Button(self, text='YES', width=15, height=2, command=self.choice)
         self.button2 = Button(self, text='NO', width=15, height=2, command=self.destroy)
         self.label.place(x=700, y=500)
@@ -135,8 +138,15 @@ class Withdrawusd(Tk):
         self.button2.place(x=100, y=1000)
 
     def question(self):
-        self.destroy()
-        Question().mainloop()
+        cash = self.entry1.get()
+        cash = int(cash)
+        while cash > 601 or cash % 5 != 0 or cash == 0:
+            self.destroy()
+            Withdrawusd().mainloop()
+        else:
+            p.usd = p.usd - cash
+            self.destroy()
+            Question().mainloop()
 
     def back(self):
         self.destroy()
@@ -157,8 +167,17 @@ class Withdrawbyn(Tk):
         self.button2.place(x=100, y=1000)
 
     def question(self):
-        self.destroy()
-        Question().mainloop()
+        cash = self.entry1.get()
+        cash = int(cash)
+        while cash > 601 or cash % 5 != 0 or cash == 0:
+            self.destroy()
+            Withdrawusd().mainloop()
+        else:
+
+            self.destroy()
+            Question().mainloop()
+
+
 
     def back(self):
         self.destroy()
@@ -181,5 +200,9 @@ class Question(Tk):
         Choice().mainloop()
 
 
+
+
 if __name__ == '__main__':
+    b = Bankomat()
+    p = Person("oleg", 1111, 2000)
     Login().mainloop()

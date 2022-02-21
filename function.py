@@ -91,15 +91,8 @@ def main():
     p.usd = (p.byn - cash) / 2
 
 
-b = Bankomat()
-p = Person("Oleg", 1111, 2000)
 
-root = Tk()
-entry = Entry()
-entry.pack(pady=10)
-Button(text='Передать', command=main).pack()
-label = Label(height=3)
-label.pack()
 
-root.mainloop()
+
+
 
